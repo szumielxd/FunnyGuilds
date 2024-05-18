@@ -609,9 +609,21 @@ public class PluginConfiguration extends OkaeriConfig {
     public List<ItemStack> validityItems = ItemUtils.parseItems("10 diamond");
 
     @Comment("")
-    @Comment("Czy wiadomość o zabiciu gracza powinna być pokazywana wszystkim")
-    @Comment("Jeśli wyłączone - będzie pokazywana tylko graczom, którzy brali udział w walce")
-    public boolean broadcastDeathMessage = true;
+    @Comment("Komu ma być wyświetlana wiadomość o śmierci gracza")
+    @Comment("PARTICIPANTS - tylko uczestnikom walki")
+    @Comment("GUILD - wszystkim uczestnikom walki i wszystkim członkom gildii ofiary, zabójcy i asystujących")
+    @Comment("WORLD - wszystkim uczestnikom walki i wszystkim graczom w świecie w którym umarła ofiara")
+    @Comment("ALL - wszystkim uczestnikom walki i wszystkim graczom na serwerze")
+    public DeathMessageReceivers deathMessageReceivers = DeathMessageReceivers.ALL;
+
+    public enum DeathMessageReceivers {
+
+        PARTICIPANTS,
+        GUILD,
+        WORLD,
+        ALL
+
+    }
 
     @Comment("")
     @Comment("Czy wyłączyć wyświetlanie domyślnej wiadomości o śmierci gracza")
