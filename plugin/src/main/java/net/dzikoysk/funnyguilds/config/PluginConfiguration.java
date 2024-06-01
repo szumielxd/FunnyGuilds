@@ -58,7 +58,7 @@ import panda.std.Option;
 @Header("~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~~ #")
 @Header("                                #")
 @Header("          FunnyGuilds           #")
-@Header("         4.12.0 Snowdrop        #")
+@Header("         4.13.0 Snowdrop        #")
 @Header("                                #")
 @Header("~-~-~-~-~-~-~-~-~-~-~-~~-~-~-~~ #")
 @Header("FunnyGuilds wspiera PlaceholderAPI, lista dodawanych placeholderów znajduje się tutaj:")
