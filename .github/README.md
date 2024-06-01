@@ -40,7 +40,7 @@ FunnyGuilds hooks into those plugins:
 <dependency>
     <groupId>net.dzikoysk.funnyguilds</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.13.0</version>
+    <version>4.13.1-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
 ```
