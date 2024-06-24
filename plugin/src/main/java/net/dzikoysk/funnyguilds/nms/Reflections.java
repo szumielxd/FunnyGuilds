@@ -6,19 +6,23 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import net.dzikoysk.funnyguilds.FunnyGuilds;
 import net.dzikoysk.funnyguilds.shared.SafeUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
 public final class Reflections {
 
-    public static String SERVER_VERSION = "1_0";
-    public static boolean NEED_ADDITIONAL_NMS_PACKAGE;
     public static boolean USE_PRE_13_METHODS;
     public static boolean USE_PRE_12_METHODS;
     public static boolean USE_PRE_9_METHODS;
+
+    private static String CRAFTBUKKIT_PACKAGE;
+    private static final String NMS_PACKAGE = "net.minecraft";
+    private static String NMS_WITH_VERSION_PACKAGE = null;
 
     private static final Map<String, Class<?>> CLASS_CACHE = new HashMap<>();
     private static final Map<String, Field> FIELD_CACHE = new HashMap<>();
@@ -33,14 +37,18 @@ public final class Reflections {
     }
 
     public static void prepareServerVersion() {
-        SERVER_VERSION = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        Server server = Bukkit.getServer();
 
-        int versionNumber = Integer.parseInt(SERVER_VERSION.split("_")[1]);
+        int versionNumber = Integer.parseInt(server.getBukkitVersion().split("-")[0].split("\\.")[1]);
 
-        NEED_ADDITIONAL_NMS_PACKAGE = versionNumber >= 17;
         USE_PRE_13_METHODS = versionNumber < 13;
         USE_PRE_12_METHODS = versionNumber < 12;
         USE_PRE_9_METHODS = versionNumber < 9;
+
+        CRAFTBUKKIT_PACKAGE = server.getClass().getPackage().getName();
+        if (versionNumber < 17) {
+            NMS_WITH_VERSION_PACKAGE = NMS_PACKAGE + ".server." + CRAFTBUKKIT_PACKAGE.split("\\.")[3];
+        }
     }
 
     public static Class<?> getClassOmitCache(String className) {
@@ -68,14 +76,12 @@ public final class Reflections {
     }
 
     public static Class<?> getNMSClass(String name, String subPackage) {
-        subPackage = NEED_ADDITIONAL_NMS_PACKAGE 
-            ? subPackage
-            : "server." + SERVER_VERSION;
-        return getClass("net.minecraft." + subPackage + "." + name);
+        String nmsPackage = Objects.requireNonNull(NMS_WITH_VERSION_PACKAGE, () -> NMS_PACKAGE + "." + subPackage);
+        return getClass(nmsPackage + "." + name);
     }
 
     public static Class<?> getCraftBukkitClass(String name) {
-        return getClass("org.bukkit.craftbukkit." + SERVER_VERSION + "." + name);
+        return getClass(CRAFTBUKKIT_PACKAGE + "." + name);
     }
 
     public static Class<?> getBukkitClass(String name) {
