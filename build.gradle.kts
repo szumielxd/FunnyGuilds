@@ -39,7 +39,6 @@ allprojects {
         /* Libs */
         mavenCentral()
         maven("https://maven.reposilite.com/releases")
-        maven("https://maven.reposilite.com/snapshots")
         maven("https://maven.reposilite.com/jitpack")
         maven("https://storehouse.okaeri.eu/repository/maven-public")
         maven("https://repo.titanvale.net/releases")
