@@ -13,8 +13,8 @@ plugins {
     id("idea")
     id("org.ajoberstar.grgit") version "4.1.1"
     id("io.github.goooler.shadow") version "8.1.7" // https://github.com/Goooler/shadow (fork of com.github.johnrengelman.shadow)
-    id("xyz.jpenilla.run-paper") version "2.3.0" apply false
-    id("io.papermc.paperweight.userdev") version "1.7.1" apply false
+    id("xyz.jpenilla.run-paper") version "2.3.1" apply false
+    id("io.papermc.paperweight.userdev") version "1.7.4" apply false
 }
 
 idea {
@@ -166,8 +166,6 @@ project(":nms").subprojects {
         return@subprojects
     }
 
-    apply(plugin = "io.papermc.paperweight.userdev")
-
     val `is-1_20_5-or-newer` = mcVersion.minor >= 21 || mcVersion.minor == 20 && mcVersion.patch >= 5
     java {
         val javaVersion = when {
@@ -186,6 +184,8 @@ project(":nms").subprojects {
         tasks.withType<RemapJar> {
             toNamespace = OBF_NAMESPACE
         }
+    } else {
+        apply(plugin = "io.papermc.paperweight.userdev")
     }
 }
 
