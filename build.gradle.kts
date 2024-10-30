@@ -13,8 +13,8 @@ plugins {
     id("idea")
     id("org.ajoberstar.grgit") version "4.1.1"
     id("io.github.goooler.shadow") version "8.1.7" // https://github.com/Goooler/shadow (fork of com.github.johnrengelman.shadow)
-    id("xyz.jpenilla.run-paper") version "2.3.1" apply false
-    id("io.papermc.paperweight.userdev") version "1.7.4" apply false
+    id("xyz.jpenilla.run-paper") version "2.2.4" apply false
+    id("io.papermc.paperweight.userdev") version "1.7.3" apply false
 }
 
 idea {
@@ -39,11 +39,27 @@ allprojects {
         /* Libs */
         mavenCentral()
         maven("https://maven.reposilite.com/releases")
-        maven("https://maven.reposilite.com/snapshots")
+        maven("https://maven.reposilite.com/snapshots") {
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
+        maven("https://storehouse.okaeri.eu/repository/maven-public") {
+            mavenContent {
+                releasesOnly()
+            }
+        }
+        maven("https://repo.titanvale.net/releases") {
+            mavenContent {
+                releasesOnly()
+            }
+        }
+        maven("https://repo.titanvale.net/snapshots") {
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
         maven("https://maven.reposilite.com/jitpack")
-        maven("https://storehouse.okaeri.eu/repository/maven-public")
-        maven("https://repo.titanvale.net/releases")
-        maven("https://repo.titanvale.net/snapshots")
 
         /* Servers */
         maven("https://libraries.minecraft.net")
@@ -181,12 +197,12 @@ project(":nms").subprojects {
         withJavadocJar()
     }
 
+    apply(plugin = "io.papermc.paperweight.userdev")
+
     if (`is-1_20_5-or-newer`) {
         tasks.withType<RemapJar> {
             toNamespace = OBF_NAMESPACE
         }
-    } else {
-        apply(plugin = "io.papermc.paperweight.userdev")
     }
 }
 
